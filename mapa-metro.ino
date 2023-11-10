@@ -7,6 +7,7 @@
 #define COLS 4             // Número de colunas do teclado
 #define ESTACAO_INICIAL 14  // Número correspondente a estação atual
 
+// Estacoes usadas na logica do codigo
 #define SE 12
 #define REPUBLICA 14
 #define BARRA_FUNDA 18
@@ -18,6 +19,7 @@
 #define BRIGADEIRO 45
 #define VILA_PRUDENTE 52
 
+// Configura a função da fita de LED com o nome "pixeles"
 Adafruit_NeoPixel pixeles = Adafruit_NeoPixel(NUM_LEDS, PIN_LED, NEO_GRB + NEO_KHZ800);
 
 // Define a disposição das teclas no teclado
@@ -32,6 +34,7 @@ char keys[ROWS][COLS] = {
 byte rowPins[ROWS] = {9, 8, 7, 6}; // Conecte os pinos do teclado às linhas 9, 8, 7 e 6
 byte colPins[COLS] = {5, 4, 3, 2}; // Conecte os pinos do teclado às colunas 5, 4, 3 e 2
 
+// Configura a função do teclado com o nome "keypad"
 Keypad keypad = Keypad(makeKeymap(keys), rowPins, colPins, ROWS, COLS);
 
 //Criar as variaveis da estação em numero inteiro (para a fita de LED) e em string(texto que é lido do teclado)
@@ -40,8 +43,7 @@ String estacaoDigitada = "";
 
 void setup() {
   pixeles.begin();
-  pixeles.show(); // Inicialmente, todos os LEDs estão apagados
-  
+  //ascende a estação atual que a pessoas esta
   pixeles.setPixelColor(REPUBLICA, 255, 0, 0); // Vermelho (R, G, B)
   pixeles.show();
 
@@ -49,8 +51,6 @@ void setup() {
 }
 
 void loop() {
-  
-
   char key = keypad.getKey(); //criar variavel que lê o teclado
   
   if (key) { // Se existir algum valor na variavel key, então executa isso
@@ -63,9 +63,10 @@ void loop() {
       Serial.print("estacao de Destino: ");
       Serial.println(estacaoDestino);
       if (estacaoDestino > 0 && estacaoDestino <= NUM_LEDS) {
-        pixeles.clear();// apagar os LEDs
+        // apagar todos os LEDs antes de começar a ascende-los novamente
+        pixeles.clear();
         pixeles.show();
-        acenderEstacao(estacaoDestino);
+        acenderEstacao(estacaoDestino); //Logica que ascende os led (veja no void acenderEstacao mais abaixo do código)
       }
       // Reseta a string para o próximo número
       estacaoDigitada = ""; 
