@@ -1,13 +1,12 @@
 #include <Adafruit_NeoPixel.h>
 #include <Keypad.h>
 
-#define PIN_LED 12          // Pino ao qual a fita de LED está conectada
-#define NUM_LEDS 58         // Número total de LEDs na fita
-#define ROWS 4              // Número de linhas do teclado
-#define COLS 4              // Número de colunas do teclado
+#define PIN_LED 12   // Pino ao qual a fita de LED está conectada
+#define NUM_LEDS 58       // Número total de LEDs na fita
+#define ROWS 4             // Número de linhas do teclado
+#define COLS 4             // Número de colunas do teclado
 #define ESTACAO_INICIAL 14  // Número correspondente a estação atual
 
-// numero da estação nos LEDs
 #define SE 12
 #define REPUBLICA 14
 #define BARRA_FUNDA 18
@@ -42,11 +41,16 @@ String estacaoDigitada = "";
 void setup() {
   pixeles.begin();
   pixeles.show(); // Inicialmente, todos os LEDs estão apagados
+  
+  pixeles.setPixelColor(REPUBLICA, 255, 0, 0); // Vermelho (R, G, B)
+  pixeles.show();
 
   Serial.begin(9600); // Inicializa a comunicação com o monitor serial
 }
 
 void loop() {
+  
+
   char key = keypad.getKey(); //criar variavel que lê o teclado
   
   if (key) { // Se existir algum valor na variavel key, então executa isso
@@ -79,80 +83,79 @@ void acenderEstacao(int estacaoDestino) {
       for (int i = ESTACAO_INICIAL; i >= (estacaoDestino-1); i--) {
         pixeles.setPixelColor(i, 255, 0, 0); // Vermelho (R, G, B)
         pixeles.show();
-        delay(500);
+        delay(200);
       }
     }else{ //vai pro lado esquerdo (18-barra funda)
       for (int i = ESTACAO_INICIAL; i < estacaoDestino; i++) {
         pixeles.setPixelColor(i, 255, 0, 0); // Vermelho (R, G, B)
         pixeles.show();
-        delay(500);
+        delay(200);
       }
     }
     
   } else if(estacaoDestino <=JABAQUARA){ //esta na linha azul
-    Serial.println("linha azul");
       // Vai até a Sé
       for (int i = ESTACAO_INICIAL; i >= SE; i--) {
         pixeles.setPixelColor(i, 255, 0, 0); // Vermelho (R, G, B)
         pixeles.show();
-        delay(500);
+        delay(200);
       }
       pixeles.setPixelColor(SE, 0, 0, 255); // azul (R, G, B)
         pixeles.show();
-        delay(500);
+        delay(200);
       
       if(estacaoDestino < PEDRO_II){ //Vai para cima (19-Tucuruvi)
         for (int i = PEDRO_II; i >= (estacaoDestino-1); i--) {
           pixeles.setPixelColor(i, 0, 0, 255); // azul (R, G, B)
           pixeles.show();
-          delay(500);
+          delay(200);
         }
         
       }else{ //Vai para baixo (jabaquara)
         for (int i = LIBERDADE; i < estacaoDestino; i++) {
           pixeles.setPixelColor(i, 0, 0, 255); // azul (R, G, B)
           pixeles.show();
-          delay(500);
+          delay(200);
         }
       }
   } else if(estacaoDestino <= VILA_PRUDENTE){ // esta na linha verde
-    Serial.println("linha verde");
     //vai até a 13-SÉ 
     for (int i = ESTACAO_INICIAL; i >= (SE); i--) {
         pixeles.setPixelColor(i, 255, 0, 0); // Vermelho (R, G, B)
         pixeles.show();
-        delay(500);
+        delay(200);
       }
       pixeles.setPixelColor(SE, 0, 0, 255); // azul (R, G, B)
         pixeles.show();
-        delay(500);
+        delay(200);
     
     //vai até o 33-Paraiso
     for (int i = LIBERDADE; i <= PARAISO; i++) {
        pixeles.setPixelColor(i, 0, 0, 255); // azul (R, G, B)
        pixeles.show();
-       delay(500);
+       delay(200);
     }
     pixeles.setPixelColor(PARAISO, 0, 255, 0); // verde (R, G, B)
     pixeles.show();
-    delay(500);
+    delay(200);
     
     if(estacaoDestino <= BRIGADEIRO+1){ // vai pra esquerda (41-vila mariana)
       for (int i = BRIGADEIRO; i >= (estacaoDestino-1); i--) {
           pixeles.setPixelColor(i, 0, 255, 0); // verde (R, G, B)
           pixeles.show();
-          delay(500);
+          delay(200);
         }
       
     } else{ // vai para direita (55-Vila prudente)
       //vai pra linha verde
       pixeles.setPixelColor(ANA_ROSA, 0, 255, 0); // verde (R, G, B)
       pixeles.show();
-      delay(500);
+      delay(200);
+      
       for (int i = BRIGADEIRO+1; i < estacaoDestino; i++) {
           pixeles.setPixelColor(i, 0, 255, 0); // verde (R, G, B)
           pixeles.show();
-          delay(500);
+          delay(200);
       }
     }
   }
